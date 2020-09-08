@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import enxy.githubapitest.R
 import enxy.githubapitest.ui.main.RepositoryViewModel
+import kotlinx.android.synthetic.main.item_loading.*
 import kotlinx.android.synthetic.main.main_fragment.view.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -40,6 +42,7 @@ class RepositoriesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        showLoading()
         viewModel.repositories.observe(viewLifecycleOwner) {
             it.fold(
                 onSuccess = { repos ->
@@ -48,13 +51,34 @@ class RepositoriesFragment : Fragment() {
                     } else {
                         repositoriesAdapter.addMore(repos)
                     }
+                    hideLoading()
                 },
-                onFailure = { showNoInternetError() }
+                onFailure = {
+                    if (repositoriesAdapter.itemCount == 0) {
+                        showTryAgainHint()
+                    } else {
+                        repositoriesAdapter.showTryAgainHint()
+                    }
+                    hideLoading()
+                }
             )
         }
     }
 
-    private fun showNoInternetError() {
-        Toast.makeText(requireContext(), "No internet", Toast.LENGTH_SHORT).show()
+    private fun showTryAgainHint() {
+        tryAgainHint.isVisible = true
+        tryAgainButton.setOnClickListener {
+            showLoading()
+            tryAgainHint.isInvisible = true
+            viewModel.onLoadMoreRepos()
+        }
+    }
+
+    private fun showLoading() {
+        progressBar.isVisible = true
+    }
+
+    private fun hideLoading() {
+        progressBar.isInvisible = true
     }
 }

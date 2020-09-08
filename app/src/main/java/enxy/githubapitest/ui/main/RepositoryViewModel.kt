@@ -10,7 +10,9 @@ import enxy.githubapitest.data.network.entity.Repository
 import enxy.githubapitest.utils.Result
 import enxy.githubapitest.utils.Result.Error
 import enxy.githubapitest.utils.Result.Success
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RepositoryViewModel(private val githubApi: GithubApi) : ViewModel() {
     private val _repositories: MutableLiveData<Result<List<Repository>>> = MutableLiveData()
@@ -30,13 +32,14 @@ class RepositoryViewModel(private val githubApi: GithubApi) : ViewModel() {
         }
     }
 
-    private suspend fun getPublicRepositories(lastRepoId: Int): Result<List<Repository>> {
-        return try {
-            Success(githubApi.getPublicRepositories(lastRepoId))
-        } catch (exception: Exception) {
-            Error(exception)
+    private suspend fun getPublicRepositories(lastRepoId: Int): Result<List<Repository>> =
+        withContext(Dispatchers.IO) {
+            try {
+                Success(githubApi.getPublicRepositories(lastRepoId))
+            } catch (exception: Exception) {
+                Error(exception)
+            }
         }
-    }
 
     fun getTestData(): List<Repository> {
         return listOf(

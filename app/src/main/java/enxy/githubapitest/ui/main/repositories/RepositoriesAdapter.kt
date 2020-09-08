@@ -3,6 +3,8 @@ package enxy.githubapitest.ui.main.repositories
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,11 +17,12 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val data: ArrayList<Repository?> = ArrayList()
-    var isLoading = false
+    private var isLoading = false
+    private var isErrorHintShown = false
 
     companion object {
-        const val VIEW_TYPE_ITEM = 0
-        const val VIEW_TYPE_LOADING = 1
+        const val VIEW_TYPE_ITEM = 0 // shows repository
+        const val VIEW_TYPE_LOADING = 1 // shows loading (try again)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -39,24 +42,29 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
 
 
     fun addAll(repositories: List<Repository>) {
-        this.data.addAll(repositories)
+        data.addAll(repositories)
         notifyDataSetChanged()
         addLoadingState()
     }
 
     fun addMore(repositories: List<Repository>) {
-        val lastIndex = this.data.size - 1
-        this.data.removeLast() // removing loading state
-        this.data.addAll(repositories)
-        this.isLoading = false
+        val lastIndex = data.size - 1
+        data.removeLast() // removing loading state
+        data.addAll(repositories)
+        isLoading = false
         notifyItemRemoved(lastIndex)
         notifyItemRangeInserted(lastIndex, repositories.size - 1)
         addLoadingState()
     }
 
     private fun addLoadingState() {
-        this.data.add(null)
+        data.add(null)
         notifyItemInserted(itemCount - 1)
+    }
+
+    fun showTryAgainHint() {
+        isErrorHintShown = true
+        notifyItemChanged(itemCount - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -77,7 +85,12 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
         if (holder is RepositoryHolder) {
             data[position]?.let { holder.bind(it) }
         } else {
-            (holder as LoadingHolder).startLoading()
+            val loadingHolder = (holder as LoadingHolder)
+            if (isErrorHintShown) {
+                loadingHolder.showTryAgainHint()
+            } else {
+                loadingHolder.startLoading()
+            }
         }
     }
 
@@ -101,9 +114,21 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
         }
     }
 
-    class LoadingHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun startLoading() {
-            itemView.progressBar.isIndeterminate = true
+    inner class LoadingHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun startLoading() = with(itemView) {
+            progressBar.isVisible = true
+            tryAgainHint.isInvisible = true
+        }
+
+        fun showTryAgainHint() = with(itemView) {
+            tryAgainHint.isVisible = true
+            progressBar.isInvisible = true
+            tryAgainButton.setOnClickListener {
+                startLoading()
+                onLoadMore(itemCount - 1)
+                isErrorHintShown = false
+                itemView.tryAgainHint.isInvisible = true
+            }
         }
     }
 

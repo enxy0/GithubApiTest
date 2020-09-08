@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GithubApiTest</string>
+    <string name="hint_no_internet">Отстуствует подключение к интернету, попробуйте еще раз!</string>
+    <string name="button_try_again">Еще раз</string>
 </resources>

@@ -14,6 +14,8 @@
     <!-- Base styles -->
     <style name="Text" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Text.Secondary" parent="Text">
@@ -28,27 +30,23 @@
         <item name="cardCornerRadius">0dp</item>
     </style>
 
+    <style name="Button" parent="Widget.MaterialComponents.Button" />
+
     <style name="Image" />
 
     <!-- Styles impl -->
     <style name="Text.Repository" parent="Text.Primary">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Text.Author" parent="Text.Secondary">
         <item name="android:textSize">16sp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Text.Avatar">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Card.Repository" parent="Card">
@@ -65,5 +63,12 @@
     <style name="Image.Avatar" parent="Image">
         <item name="android:layout_width">25dp</item>
         <item name="android:layout_height">25dp</item>
+    </style>
+
+    <style name="Button.Try" parent="Button">
+        <item name="android:radius">16dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/button_try_again</item>
     </style>
 </resources>
