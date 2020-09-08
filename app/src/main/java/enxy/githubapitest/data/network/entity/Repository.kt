@@ -1,16 +1,10 @@
 package enxy.githubapitest.data.network.entity
 
-data class Repository(
-    val id: Long,
-    val name: String,
-    val author: String,
-    val avatarUrl: String,
-    val lastCommit: Commit
-)
+import com.google.gson.annotations.SerializedName
 
-data class Commit(
-    val message: String,
-    val author: String,
-    val date: String,
-    val parentsSha: List<String>
+data class Repository(
+    @SerializedName("id") val id : Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("owner") val owner: Owner,
+    @SerializedName("commits_url") val commitsUrl: String
 )
