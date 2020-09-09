@@ -15,8 +15,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RepositoryViewModel(private val githubApi: GithubApi) : ViewModel() {
-    private val _repositories: MutableLiveData<Result<List<Repository>>> = MutableLiveData()
-    val repositories: LiveData<Result<List<Repository>>> = _repositories
+    private val repositories: ArrayList<Repository> = ArrayList() // local cache of repos
+
+    private val _uiState: MutableLiveData<Result<List<Repository>>> = MutableLiveData()
+    val uiState: LiveData<Result<List<Repository>>> = _uiState
 
     companion object {
         const val START_REPOSITORY_ID = 0
@@ -28,11 +30,19 @@ class RepositoryViewModel(private val githubApi: GithubApi) : ViewModel() {
 
     fun onLoadMoreRepos(lastRepoId: Int = START_REPOSITORY_ID) {
         viewModelScope.launch {
-            _repositories.value = getPublicRepositories(lastRepoId)
+            when (val result = getPublicRepositories(lastRepoId)) {
+                is Success -> {
+                    repositories.addAll(result.data)
+                    _uiState.value = Success(repositories)
+                }
+                is Error -> {
+                    _uiState.value = result
+                }
+            }
         }
     }
 
-    private suspend fun getPublicRepositories(lastRepoId: Int): Result<List<Repository>> =
+    private suspend fun getPublicRepositories(lastRepoId: Int): Result<ArrayList<Repository>> =
         withContext(Dispatchers.IO) {
             try {
                 Success(githubApi.getPublicRepositories(lastRepoId))

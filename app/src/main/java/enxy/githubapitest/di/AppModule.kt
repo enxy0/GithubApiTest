@@ -1,7 +1,9 @@
 package enxy.githubapitest.di
 
 import enxy.githubapitest.data.network.GithubApi
+import enxy.githubapitest.ui.details.DetailsViewModel
 import enxy.githubapitest.ui.repositories.RepositoriesAdapter
+import enxy.githubapitest.ui.repositories.RepositoryCallback
 import enxy.githubapitest.ui.repositories.RepositoryViewModel
 import enxy.githubapitest.utils.GITHUB_URL
 import okhttp3.OkHttpClient
@@ -26,12 +28,16 @@ val appModule = module {
             .connectTimeout(3, TimeUnit.SECONDS)
             .build()
     }
-    factory { (onLoadMore: (lastRepoId: Int) -> Unit) ->
-        RepositoriesAdapter(onLoadMore).apply {
+    factory { (repositoryCallback: RepositoryCallback) ->
+        RepositoriesAdapter(repositoryCallback).apply {
             setHasStableIds(true)
         }
     }
     viewModel {
         RepositoryViewModel(get())
+    }
+
+    viewModel {
+        DetailsViewModel()
     }
 }

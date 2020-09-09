@@ -13,7 +13,7 @@ import enxy.githubapitest.data.network.entity.Repository
 import kotlinx.android.synthetic.main.item_loading.view.*
 import kotlinx.android.synthetic.main.item_repository.view.*
 
-class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
+class RepositoriesAdapter(private val repositoryCallback: RepositoryCallback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val data: ArrayList<Repository?> = ArrayList()
@@ -33,27 +33,20 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition()
                 if (!isLoading && lastVisibleItem == itemCount - 1) {
-                    data[lastVisibleItem - 1]?.id?.let { onLoadMore(it) }
+                    data[lastVisibleItem - 1]?.id?.let { repositoryCallback.onLoadMore(it) }
                     isLoading = true
                 }
             }
         })
     }
 
-
     fun addAll(repositories: List<Repository>) {
-        data.addAll(repositories)
-        notifyDataSetChanged()
-        addLoadingState()
-    }
-
-    fun addMore(repositories: List<Repository>) {
         val lastIndex = data.size - 1
-        data.removeLast() // removing loading state
+        data.clear()
         data.addAll(repositories)
         isLoading = false
-        notifyItemRemoved(lastIndex)
-        notifyItemRangeInserted(lastIndex, repositories.size - 1)
+        notifyItemRemoved(lastIndex) // telling recycler view about deleted loading state (null)
+        notifyItemRangeInserted(lastIndex, repositories.size - 1) // notifying about
         addLoadingState()
     }
 
@@ -102,8 +95,15 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
         return data[position]?.id?.toLong() ?: 0
     }
 
-    class RepositoryHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun getItemCount(): Int {
+        return data.size
+    }
+
+    inner class RepositoryHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(githubRepository: Repository) = with(itemView) {
+            repositoryCard.setOnClickListener {
+                repositoryCallback.onDetailsClicked(githubRepository)
+            }
             repository.text = githubRepository.name
             login.text = githubRepository.owner.login
             Glide.with(itemView)
@@ -125,14 +125,12 @@ class RepositoriesAdapter(private val onLoadMore: (lastRepoId: Int) -> Unit) :
             progressBar.isInvisible = true
             tryAgainButton.setOnClickListener {
                 startLoading()
-                onLoadMore(itemCount - 1)
+                data[itemCount - 1]?.let { lastRepo ->
+                    repositoryCallback.onLoadMore(lastRepo.id)
+                }
                 isErrorHintShown = false
                 itemView.tryAgainHint.isInvisible = true
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
     }
 }

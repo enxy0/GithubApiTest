@@ -10,14 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import enxy.githubapitest.R
+import enxy.githubapitest.data.network.entity.Repository
+import enxy.githubapitest.ui.details.DetailsFragment
 import kotlinx.android.synthetic.main.item_loading.*
 import kotlinx.android.synthetic.main.repositories_fragment.view.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
-class RepositoriesFragment : Fragment() {
+class RepositoriesFragment : Fragment(), RepositoryCallback {
     private val repositoriesAdapter by inject<RepositoriesAdapter>() {
-        parametersOf(viewModel::onLoadMoreRepos)
+        parametersOf(this)
     }
     private val viewModel: RepositoryViewModel by inject()
 
@@ -42,14 +44,10 @@ class RepositoriesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         showLoading()
-        viewModel.repositories.observe(viewLifecycleOwner) {
+        viewModel.uiState.observe(viewLifecycleOwner) {
             it.fold(
                 onSuccess = { repos ->
-                    if (repositoriesAdapter.itemCount == 0) {
-                        repositoriesAdapter.addAll(repos)
-                    } else {
-                        repositoriesAdapter.addMore(repos)
-                    }
+                    repositoriesAdapter.addAll(repos)
                     hideLoading()
                 },
                 onFailure = {
@@ -79,5 +77,16 @@ class RepositoriesFragment : Fragment() {
 
     private fun hideLoading() {
         progressBar.isInvisible = true
+    }
+
+    override fun onDetailsClicked(repository: Repository) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, DetailsFragment.newInstance(repository))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onLoadMore(lastRepoId: Int) {
+        viewModel.onLoadMoreRepos(lastRepoId)
     }
 }

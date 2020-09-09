@@ -6,5 +6,5 @@ import retrofit2.http.Query
 
 interface GithubApi {
     @GET("/repositories")
-    suspend fun getPublicRepositories(@Query("since") lastRepoId: Int): List<Repository>
+    suspend fun getPublicRepositories(@Query("since") lastRepoId: Int): ArrayList<Repository>
 }
