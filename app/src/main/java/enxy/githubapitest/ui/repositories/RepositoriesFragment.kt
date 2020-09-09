@@ -1,6 +1,7 @@
 package enxy.githubapitest.ui.repositories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,14 @@ import enxy.githubapitest.ui.details.DetailsFragment
 import kotlinx.android.synthetic.main.item_loading.*
 import kotlinx.android.synthetic.main.repositories_fragment.view.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class RepositoriesFragment : Fragment(), RepositoryCallback {
     private val repositoriesAdapter by inject<RepositoriesAdapter>() {
         parametersOf(this)
     }
-    private val viewModel: RepositoryViewModel by inject()
+    private val viewModel: RepositoryViewModel by viewModel()
 
     companion object {
         fun newInstance() = RepositoriesFragment()
@@ -47,6 +49,11 @@ class RepositoriesFragment : Fragment(), RepositoryCallback {
         viewModel.uiState.observe(viewLifecycleOwner) {
             it.fold(
                 onSuccess = { repos ->
+                    Log.d("RepositoriesFragment", "onActivityCreated: repos=${repos.size}")
+                    Log.d(
+                        "RepositoriesFragment",
+                        "onActivityCreated: adapter=${repositoriesAdapter.itemCount}"
+                    )
                     repositoriesAdapter.addAll(repos)
                     hideLoading()
                 },
