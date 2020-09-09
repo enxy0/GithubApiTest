@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import enxy.githubapitest.R
-import enxy.githubapitest.data.network.entity.Repository
+import enxy.githubapitest.data.network.entity.repository.Repository
 import kotlinx.android.synthetic.main.item_loading.view.*
 import kotlinx.android.synthetic.main.item_repository.view.*
 
@@ -105,12 +105,12 @@ class RepositoriesAdapter(private val repositoryCallback: RepositoryCallback) :
                 repositoryCallback.onDetailsClicked(githubRepository)
             }
             repository.text = githubRepository.name
-            login.text = githubRepository.owner.login
+            repositoryAuthorLogin.text = githubRepository.owner.login
             Glide.with(itemView)
                 .load(githubRepository.owner.avatarUrl)
                 .circleCrop()
                 .placeholder(R.drawable.ic_launcher_foreground)
-                .into(avatar)
+                .into(repositoryAuthorAvatar)
         }
     }
 

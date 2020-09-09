@@ -35,13 +35,9 @@
     <style name="Image" />
 
     <!-- Styles impl -->
-    <style name="Text.Repository" parent="Text.Primary">
+    <style name="Text.Primary.Bold" parent="Text.Primary">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text.Login" parent="Text.Secondary">
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Card.Repository" parent="Card">
@@ -67,7 +63,21 @@
         <item name="android:text">@string/button_try_again</item>
     </style>
 
-    <style name="Text.Repository.Big" parent="Text.Repository">
-        <item name="android:textSize">30sp</item>
+    <style name="Text.Title" parent="Text.Primary">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Header" parent="Text.Secondary">
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="Card.Details" parent="Card">
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardBackgroundColor">@color/background</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>

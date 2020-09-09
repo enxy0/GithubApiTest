@@ -1,4 +1,4 @@
-package enxy.githubapitest.data.network.entity
+package enxy.githubapitest.data.network.entity.repository
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

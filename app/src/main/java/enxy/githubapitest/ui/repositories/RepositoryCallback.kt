@@ -1,6 +1,6 @@
 package enxy.githubapitest.ui.repositories
 
-import enxy.githubapitest.data.network.entity.Repository
+import enxy.githubapitest.data.network.entity.repository.Repository
 
 interface RepositoryCallback {
     fun onDetailsClicked(repository: Repository)

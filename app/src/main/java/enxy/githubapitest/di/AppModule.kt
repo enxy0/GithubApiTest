@@ -3,6 +3,7 @@ package enxy.githubapitest.di
 import enxy.githubapitest.data.network.GithubApi
 import enxy.githubapitest.data.network.GithubDataSource
 import enxy.githubapitest.ui.details.DetailsViewModel
+import enxy.githubapitest.ui.details.ParentAdapter
 import enxy.githubapitest.ui.repositories.RepositoriesAdapter
 import enxy.githubapitest.ui.repositories.RepositoryCallback
 import enxy.githubapitest.ui.repositories.RepositoryViewModel
@@ -38,11 +39,16 @@ val appModule = module {
             setHasStableIds(true)
         }
     }
+
+    factory {
+        ParentAdapter()
+    }
+
     viewModel {
         RepositoryViewModel(get())
     }
 
     viewModel {
-        DetailsViewModel()
+        DetailsViewModel(get())
     }
 }

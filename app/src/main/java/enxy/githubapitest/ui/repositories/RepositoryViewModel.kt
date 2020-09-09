@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import enxy.githubapitest.data.network.GithubDataSource
-import enxy.githubapitest.data.network.entity.Repository
+import enxy.githubapitest.data.network.entity.repository.Repository
 import enxy.githubapitest.utils.Result
 import enxy.githubapitest.utils.Result.Error
 import enxy.githubapitest.utils.Result.Success

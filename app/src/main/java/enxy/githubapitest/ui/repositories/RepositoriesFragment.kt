@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import enxy.githubapitest.R
-import enxy.githubapitest.data.network.entity.Repository
+import enxy.githubapitest.data.network.entity.repository.Repository
 import enxy.githubapitest.ui.details.DetailsFragment
 import kotlinx.android.synthetic.main.item_loading.*
 import kotlinx.android.synthetic.main.repositories_fragment.view.*

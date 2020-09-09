@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">GithubApiTest</string>
-    <string name="hint_no_internet">Отстуствует подключение к интернету, попробуйте еще раз!</string>
-    <string name="button_try_again">Еще раз</string>
+    <string name="hint_no_internet">No network connection, please try again!</string>
+    <string name="button_try_again">Try again</string>
+    <string name="title_repository">Repository: %1s</string>
+    <string name="header_commit_message">Commit message</string>
+    <string name="header_commit_date">Commit date</string>
+    <string name="header_commit_author">Commit author</string>
+    <string name="header_commit_parents">Commit sha parents</string>
+    <string name="title_last_commit">Last commit</string>
 </resources>
