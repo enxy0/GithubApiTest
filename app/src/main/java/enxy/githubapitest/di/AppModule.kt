@@ -1,6 +1,7 @@
 package enxy.githubapitest.di
 
 import enxy.githubapitest.data.network.GithubApi
+import enxy.githubapitest.data.network.GithubDataSource
 import enxy.githubapitest.ui.details.DetailsViewModel
 import enxy.githubapitest.ui.repositories.RepositoriesAdapter
 import enxy.githubapitest.ui.repositories.RepositoryCallback
@@ -22,12 +23,16 @@ val appModule = module {
             .build()
             .create(GithubApi::class.java)
     }
-
     single {
         OkHttpClient.Builder()
             .connectTimeout(3, TimeUnit.SECONDS)
             .build()
     }
+
+    single {
+        GithubDataSource(get())
+    }
+
     factory { (repositoryCallback: RepositoryCallback) ->
         RepositoriesAdapter(repositoryCallback).apply {
             setHasStableIds(true)
