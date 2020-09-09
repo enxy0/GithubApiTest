@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import enxy.githubapitest.R
 import enxy.githubapitest.ui.main.RepositoryViewModel
 import kotlinx.android.synthetic.main.item_loading.*
-import kotlinx.android.synthetic.main.main_fragment.view.*
+import kotlinx.android.synthetic.main.repositories_fragment.view.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -30,7 +30,7 @@ class RepositoriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.main_fragment, container, false)
+        val view = inflater.inflate(R.layout.repositories_fragment, container, false)
         with(view.repositoryList) {
             val linearLayoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
             layoutManager = linearLayoutManager
