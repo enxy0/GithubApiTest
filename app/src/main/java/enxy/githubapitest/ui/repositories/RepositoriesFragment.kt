@@ -1,4 +1,4 @@
-package enxy.githubapitest.ui.main.repositories
+package enxy.githubapitest.ui.repositories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import enxy.githubapitest.R
-import enxy.githubapitest.ui.main.RepositoryViewModel
 import kotlinx.android.synthetic.main.item_loading.*
 import kotlinx.android.synthetic.main.repositories_fragment.view.*
 import org.koin.android.ext.android.inject

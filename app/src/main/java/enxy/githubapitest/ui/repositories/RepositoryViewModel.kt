@@ -1,4 +1,4 @@
-package enxy.githubapitest.ui.main
+package enxy.githubapitest.ui.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

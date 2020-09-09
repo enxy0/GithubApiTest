@@ -1,8 +1,8 @@
 package enxy.githubapitest.di
 
 import enxy.githubapitest.data.network.GithubApi
-import enxy.githubapitest.ui.main.RepositoryViewModel
-import enxy.githubapitest.ui.main.repositories.RepositoriesAdapter
+import enxy.githubapitest.ui.repositories.RepositoriesAdapter
+import enxy.githubapitest.ui.repositories.RepositoryViewModel
 import enxy.githubapitest.utils.GITHUB_URL
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel

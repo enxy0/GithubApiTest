@@ -1,8 +1,9 @@
-package enxy.githubapitest
+package enxy.githubapitest.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import enxy.githubapitest.ui.main.repositories.RepositoriesFragment
+import enxy.githubapitest.R
+import enxy.githubapitest.ui.repositories.RepositoriesFragment
 
 class MainActivity : AppCompatActivity() {
 

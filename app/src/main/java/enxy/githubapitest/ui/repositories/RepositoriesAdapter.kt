@@ -1,4 +1,4 @@
-package enxy.githubapitest.ui.main.repositories
+package enxy.githubapitest.ui.repositories
 
 import android.view.LayoutInflater
 import android.view.View
