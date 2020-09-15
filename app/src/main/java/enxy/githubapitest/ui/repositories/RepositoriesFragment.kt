@@ -47,25 +47,22 @@ class RepositoriesFragment : Fragment(), RepositoryCallback {
         super.onActivityCreated(savedInstanceState)
         showLoading()
         viewModel.uiState.observe(viewLifecycleOwner) {
-            it.fold(
-                onSuccess = { repos ->
-                    Log.d("RepositoriesFragment", "onActivityCreated: repos=${repos.size}")
-                    Log.d(
-                        "RepositoriesFragment",
-                        "onActivityCreated: adapter=${repositoriesAdapter.itemCount}"
-                    )
-                    repositoriesAdapter.addAll(repos)
-                    hideLoading()
-                },
-                onFailure = {
-                    if (repositoriesAdapter.itemCount == 0) {
-                        showTryAgainHint()
-                    } else {
-                        repositoriesAdapter.showTryAgainHint()
-                    }
-                    hideLoading()
+            it.onSuccess { repos ->
+                Log.d("RepositoriesFragment", "onActivityCreated: repos=${repos.size}")
+                Log.d(
+                    "RepositoriesFragment",
+                    "onActivityCreated: adapter=${repositoriesAdapter.itemCount}"
+                )
+                repositoriesAdapter.addAll(repos)
+                hideLoading()
+            }.onFailure {
+                if (repositoriesAdapter.itemCount == 0) {
+                    showTryAgainHint()
+                } else {
+                    repositoriesAdapter.showTryAgainHint()
                 }
-            )
+                hideLoading()
+            }
         }
     }
 
